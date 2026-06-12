@@ -1,0 +1,3 @@
+[submodule "xflow-devctl"]
+	path = xflow-devctl
+	url = https://github.com/Linkk2000/xflow-devctl.git
