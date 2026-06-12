@@ -1,0 +1,6 @@
+{"protocol_version": "1.0", "type": "metadata", "created_at": "2026-04-14T11:19:13.160000"}
+{"type": "context.append_message", "message": {"role": "user", "content": [{"type": "text", "text": "Hello, what can you do?"}]}}
+{"type": "context.append_message", "message": {"role": "assistant", "content": [{"type": "think", "think": "The user is greeting me."}, {"type": "text", "text": "Hi! I can help you with coding, writing, and answering questions."}]}}
+{"type": "context.append_message", "message": {"role": "user", "content": [{"type": "text", "text": "Write a Python hello world."}]}}
+{"type": "context.append_message", "message": {"role": "assistant", "content": [{"type": "text", "text": "```python\nprint('Hello, world!')\n```"}]}}
+{"type": "context.append_message", "message": {"role": "tool", "content": [{"type": "text", "text": "Tool result"}]}}
