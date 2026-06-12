@@ -4,7 +4,7 @@
 
 - [x] 创建远程 Issue #1
 - [x] 编写 implementation_plan.md
-- [ ] 切出功能分支 `feature/1-implement-session-browser-and-export`
+- [x] 切出功能分支 `feat/1-implement-session-browser-and-export`
 
 ---
 
@@ -12,20 +12,20 @@
 
 ### 会话解析器
 
-- [ ] 先编写/确认对应的失败测试：旧版 wire.jsonl 解析
-- [ ] 先编写/确认对应的失败测试：新版 wire.jsonl 解析
-- [ ] 实现 `session_parser.py`：读取 state.json + wire.jsonl
-- [ ] 实现新旧格式兼容：提取 user/assistant 消息，过滤工具事件
-- [ ] 运行 `pytest` 并通过
+- [x] 先编写/确认对应的失败测试：旧版 wire.jsonl 解析
+- [x] 先编写/确认对应的失败测试：新版 wire.jsonl 解析
+- [x] 实现 `session_parser.py`：读取 state.json + wire.jsonl
+- [x] 实现新旧格式兼容：提取 user/assistant 消息，过滤工具事件
+- [x] 运行 `pytest` 并通过
 
 ### API 路由
 
-- [ ] 先编写/确认对应的失败测试：`GET /api/sessions`
-- [ ] 先编写/确认对应的失败测试：`GET /api/sessions/{id}`
-- [ ] 先编写/确认对应的失败测试：`POST /api/sessions/{id}/export`
-- [ ] 实现 `routers/sessions.py`
-- [ ] 实现 CORS 与异常处理
-- [ ] 运行 `pytest` 并通过
+- [x] 先编写/确认对应的失败测试：`GET /api/sessions`
+- [x] 先编写/确认对应的失败测试：`GET /api/sessions/{id}`
+- [x] 先编写/确认对应的失败测试：`POST /api/sessions/{id}/export`
+- [x] 实现 `routers/sessions.py`
+- [x] 实现 CORS 与异常处理
+- [x] 运行 `pytest` 并通过
 
 ---
 
