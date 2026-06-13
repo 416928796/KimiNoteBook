@@ -9,9 +9,22 @@ from app.services.session_parser import (
     parse_wire_records,
     parse_legacy_wire_records,
     format_content,
+    _parse_datetime,
 )
 
 FIXTURES = Path(__file__).parent / "fixtures"
+
+
+def test_parse_datetime_milliseconds():
+    dt = _parse_datetime(1776745686185)
+    assert dt is not None
+    assert dt.year == 2026
+
+
+def test_parse_datetime_float_seconds():
+    dt = _parse_datetime(1778549116.3439994)
+    assert dt is not None
+    assert dt.year == 2026
 
 
 def test_format_content_text():

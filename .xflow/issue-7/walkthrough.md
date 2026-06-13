@@ -55,7 +55,7 @@ $ npm test
 > npm run test:server && npm run test:web
 
 # 后端
-19 passed
+21 passed
 
 # 前端
 2 passed (5 tests)
@@ -67,6 +67,29 @@ $ npm test
 $ cd web && npx vue-tsc -b
 # 无错误
 ```
+
+真实环境联调：
+
+```bash
+$ cd server && python -m uvicorn app.main:app --port 8003
+$ curl http://localhost:8003/api/sessions | jq '{count: length, sources: map(.source) | unique}'
+{
+  "count": 360,
+  "sources": ["kimi-code", "kimi-legacy"]
+}
+```
+
+## 联调中发现并修复的问题
+
+1. **毫秒 vs 秒时间戳混淆**
+   - 现象：启动后 `/api/sessions` 报 `OSError: [Errno 22] Invalid argument`。
+   - 原因：新版 `wire.jsonl` 的 `time` 字段为毫秒整数，而 kimi-legacy 为浮点秒；统一按秒解析导致整数过大。
+   - 修复：`_parse_datetime` 中 `int` 按毫秒处理，`float` 按秒处理。
+
+2. **时区感知与不感知 datetime 混排**
+   - 现象：修复时间戳后报 `TypeError: can't compare offset-naive and offset-aware datetimes`。
+   - 原因：ISO 字符串含 `Z` 时解析为 aware datetime，而时间戳解析为 naive datetime，排序时无法比较。
+   - 修复：ISO 解析后若带时区则转换为 naive datetime。
 
 ## 行为变更
 
