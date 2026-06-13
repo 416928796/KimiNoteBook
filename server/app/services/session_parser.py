@@ -13,12 +13,19 @@ from app.models.session import QAPair, SessionDetail, SessionSummary
 def _parse_datetime(value: int | str | float | None) -> datetime | None:
     if value is None:
         return None
-    if isinstance(value, (int, float)):
+    # 新版 Kimi 使用毫秒时间戳，kimi-legacy 使用浮点数秒。
+    if isinstance(value, int):
+        return datetime.fromtimestamp(value / 1000.0)
+    if isinstance(value, float):
         return datetime.fromtimestamp(value)
     if not value:
         return None
     try:
-        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+        dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        # 统一为无时区 naive datetime，避免与毫秒/浮点时间戳解析出的 naive datetime 混排时报错。
+        if dt.tzinfo is not None:
+            dt = dt.replace(tzinfo=None)
+        return dt
     except ValueError:
         return None
 
