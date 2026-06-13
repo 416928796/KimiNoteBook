@@ -69,5 +69,5 @@
 - [x] 根目录添加 `package.json` 一键启动脚本
 - [x] 更新 README.md 使用说明
 - [x] 端到端验证：启动前后端，浏览会话，导出 Markdown
-- [ ] 提交代码并发起 PR
-- [ ] 更新 walkthrough.md
+- [x] 提交代码并发起 PR
+- [x] 更新 walkthrough.md
