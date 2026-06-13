@@ -2,7 +2,7 @@
   <div class="session-list-view">
     <div class="page-header">
       <h1 class="page-title">
-        <el-icon size="32" color="var(--el-color-primary)"><ChatLineRound /></el-icon>
+        <img src="/kimi-logo.svg" alt="Kimi" class="kimi-logo" />
         Kimi 会话浏览器
       </h1>
       <p class="page-subtitle">浏览本地 Kimi Code CLI 会话，导出精彩对话</p>
@@ -56,7 +56,7 @@
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElSkeleton, ElEmpty, ElInput, ElButton, ElIcon } from 'element-plus';
-import { ChatLineRound, Search, Refresh } from '@element-plus/icons-vue';
+import { Search, Refresh } from '@element-plus/icons-vue';
 import { useSessionsStore } from '@/stores/sessions';
 import SessionCard from '@/components/SessionCard.vue';
 import type { SessionSummary } from '@/types';
@@ -94,6 +94,13 @@ function goToDetail(session: SessionSummary) {
   font-size: 32px;
   font-weight: 700;
   color: var(--el-text-color-primary);
+}
+
+.kimi-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.25);
 }
 
 .page-subtitle {

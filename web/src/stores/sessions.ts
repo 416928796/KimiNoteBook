@@ -3,12 +3,15 @@ import { ref, computed } from 'vue';
 import type { SessionSummary, SessionDetail } from '@/types';
 import { listSessions, getSession } from '@/api/sessions';
 
+export type RenderMode = 'source' | 'rendered';
+
 export const useSessionsStore = defineStore('sessions', () => {
   const sessions = ref<SessionSummary[]>([]);
   const currentSession = ref<SessionDetail | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
   const searchQuery = ref('');
+  const renderMode = ref<RenderMode>('rendered');
 
   const filteredSessions = computed(() => {
     const query = searchQuery.value.trim().toLowerCase();
@@ -50,15 +53,21 @@ export const useSessionsStore = defineStore('sessions', () => {
     currentSession.value = null;
   }
 
+  function setRenderMode(mode: RenderMode) {
+    renderMode.value = mode;
+  }
+
   return {
     sessions,
     currentSession,
     loading,
     error,
     searchQuery,
+    renderMode,
     filteredSessions,
     fetchSessions,
     fetchSession,
     clearCurrentSession,
+    setRenderMode,
   };
 });

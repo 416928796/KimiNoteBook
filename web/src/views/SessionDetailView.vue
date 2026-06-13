@@ -59,6 +59,8 @@
       :pairs="store.currentSession.qa_pairs"
       :selected-indices="selectedIndices"
     />
+
+    <RenderToggle />
   </div>
 </template>
 
@@ -70,6 +72,7 @@ import { ArrowLeft, Download } from '@element-plus/icons-vue';
 import { useSessionsStore } from '@/stores/sessions';
 import MessageItem from '@/components/MessageItem.vue';
 import ExportDialog from '@/components/ExportDialog.vue';
+import RenderToggle from '@/components/RenderToggle.vue';
 
 const props = defineProps<{
   id: string;
