@@ -19,6 +19,7 @@ class SessionSummary(BaseModel):
     created_at: datetime | None = None
     updated_at: datetime | None = None
     message_count: int = 0
+    source: str = "kimi-code"
 
 
 class SessionDetail(SessionSummary):

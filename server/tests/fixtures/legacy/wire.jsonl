@@ -1,0 +1,10 @@
+{"type": "metadata", "protocol_version": "1.9"}
+{"timestamp": 1776745686.1859953, "message": {"type": "TurnBegin", "payload": {"user_input": [{"type": "text", "text": "Hello, what can you do?"}]}}}
+{"timestamp": 1776745686.1895065, "message": {"type": "StepBegin", "payload": {"n": 1}}}
+{"timestamp": 1776745687.0, "message": {"type": "ContentPart", "payload": {"type": "think", "think": "The user is greeting me."}}}
+{"timestamp": 1776745688.0, "message": {"type": "ContentPart", "payload": {"type": "text", "text": "Hi! I can help you with coding, writing, and answering questions."}}}
+{"timestamp": 1776745689.0046058, "message": {"type": "TurnEnd", "payload": {}}}
+{"timestamp": 1776745690.0, "message": {"type": "TurnBegin", "payload": {"user_input": "Write a Python hello world."}}}
+{"timestamp": 1776745691.0, "message": {"type": "StepBegin", "payload": {"n": 1}}}
+{"timestamp": 1776745692.0, "message": {"type": "ContentPart", "payload": {"type": "text", "text": "```python\nprint('Hello, world!')\n```"}}}
+{"timestamp": 1776745693.0, "message": {"type": "TurnEnd", "payload": {}}}

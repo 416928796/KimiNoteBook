@@ -5,6 +5,7 @@
       <div class="detail-title">
         <h2>{{ store.currentSession?.title || sessionId }}</h2>
         <p v-if="store.currentSession?.created_at" class="detail-meta">
+          <el-tag size="small" :type="sourceTagType">{{ sourceLabel }}</el-tag>
           {{ formattedDate }} · {{ store.currentSession?.message_count || 0 }} 条消息
         </p>
       </div>
@@ -67,7 +68,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { ElButton, ElCheckbox, ElSkeleton, ElEmpty } from 'element-plus';
+import { ElButton, ElCheckbox, ElSkeleton, ElEmpty, ElTag } from 'element-plus';
 import { ArrowLeft, Download } from '@element-plus/icons-vue';
 import { useSessionsStore } from '@/stores/sessions';
 import MessageItem from '@/components/MessageItem.vue';
@@ -89,6 +90,20 @@ const formattedDate = computed(() => {
   const date = store.currentSession?.created_at;
   if (!date) return '';
   return new Date(date).toLocaleString('zh-CN');
+});
+
+const sourceLabel = computed(() => {
+  switch (store.currentSession?.source) {
+    case 'kimi-legacy':
+      return 'Kimi Legacy';
+    case 'kimi-code':
+    default:
+      return '新版 Kimi';
+  }
+});
+
+const sourceTagType = computed(() => {
+  return store.currentSession?.source === 'kimi-legacy' ? 'warning' : 'success';
 });
 
 const isAllSelected = computed(() => {

@@ -11,6 +11,7 @@ export interface SessionSummary {
   created_at?: string;
   updated_at?: string;
   message_count: number;
+  source?: 'kimi-code' | 'kimi-legacy' | string;
 }
 
 export interface SessionDetail extends SessionSummary {
