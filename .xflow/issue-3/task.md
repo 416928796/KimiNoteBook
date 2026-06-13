@@ -42,4 +42,4 @@
 
 - [x] 运行全部测试：`npm test`
 - [x] 更新 walkthrough.md
-- [ ] 提交代码并发起 PR
+- [x] 提交代码并发起 PR
