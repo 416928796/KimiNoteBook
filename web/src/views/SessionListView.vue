@@ -8,7 +8,7 @@
       <p class="page-subtitle">浏览本地 Kimi Code CLI 会话，导出精彩对话</p>
     </div>
 
-    <div class="toolbar">
+    <div class="toolbar" >
       <el-input
         v-model="store.searchQuery"
         placeholder="搜索会话标题或 ID"
@@ -106,6 +106,7 @@ function goToDetail(session: SessionSummary) {
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
+  justify-content: center; /* 新增 */
 }
 
 .search-input {
