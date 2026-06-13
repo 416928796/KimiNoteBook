@@ -21,8 +21,12 @@
 ```bash
 cd server
 uv venv
-source .venv/Scripts/activate  # Windows
-# 或 source .venv/bin/activate  # Linux/macOS
+
+# 激活虚拟环境（按你的终端选择其一）
+source .venv/Scripts/activate     # Git Bash / WSL
+# .venv\Scripts\activate.bat      # CMD
+# .venv\Scripts\Activate.ps1     # PowerShell
+
 uv pip install -r requirements.txt
 ```
 
