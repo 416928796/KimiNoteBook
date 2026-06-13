@@ -8,7 +8,10 @@
     <div class="card-content">
       <div class="card-header">
         <h3 class="title">{{ session.title || session.id }}</h3>
-        <el-tag size="small" type="info">{{ session.message_count }} 条消息</el-tag>
+        <div class="header-tags">
+          <el-tag size="small" :type="sourceTagType">{{ sourceLabel }}</el-tag>
+          <el-tag size="small" type="info">{{ session.message_count }} 条消息</el-tag>
+        </div>
       </div>
       <div class="card-meta">
         <span class="meta-item">
@@ -43,6 +46,20 @@ const formattedDate = computed(() => {
   if (!props.session.created_at) return '未知时间';
   return new Date(props.session.created_at).toLocaleString('zh-CN');
 });
+
+const sourceLabel = computed(() => {
+  switch (props.session.source) {
+    case 'kimi-legacy':
+      return 'Kimi Legacy';
+    case 'kimi-code':
+    default:
+      return '新版 Kimi';
+  }
+});
+
+const sourceTagType = computed(() => {
+  return props.session.source === 'kimi-legacy' ? 'warning' : 'success';
+});
 </script>
 
 <style scoped>
@@ -74,6 +91,12 @@ const formattedDate = computed(() => {
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
+}
+
+.header-tags {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .title {

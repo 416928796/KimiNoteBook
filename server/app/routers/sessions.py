@@ -7,7 +7,7 @@ from pathlib import Path
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import PlainTextResponse
 
-from app.config import get_sessions_root
+from app.config import get_legacy_sessions_root, get_sessions_root
 from app.models.session import ExportRequest, SessionDetail, SessionSummary
 from app.services.session_parser import list_sessions, parse_session
 
@@ -39,14 +39,20 @@ def _demote_headings(content: str) -> str:
 router = APIRouter(prefix="/api/sessions", tags=["sessions"])
 
 
-def _find_session_dir(session_id: str) -> Path | None:
-    root = get_sessions_root()
-    for wd_dir in root.iterdir():
-        if not wd_dir.is_dir():
+def _find_session_dir(session_id: str) -> tuple[Path, str] | None:
+    """在新版与 legacy 根目录中查找会话目录，返回 (path, source)。新版优先。"""
+    for root, source in (
+        (get_sessions_root(), "kimi-code"),
+        (get_legacy_sessions_root(), "kimi-legacy"),
+    ):
+        if not root.exists():
             continue
-        for session_dir in wd_dir.iterdir():
-            if session_dir.name == session_id:
-                return session_dir
+        for wd_dir in root.iterdir():
+            if not wd_dir.is_dir():
+                continue
+            for session_dir in wd_dir.iterdir():
+                if session_dir.name == session_id:
+                    return session_dir, source
     return None
 
 
@@ -57,19 +63,21 @@ def get_sessions() -> list[SessionSummary]:
 
 @router.get("/{session_id}", response_model=SessionDetail)
 def get_session(session_id: str) -> SessionDetail:
-    session_dir = _find_session_dir(session_id)
-    if not session_dir:
+    found = _find_session_dir(session_id)
+    if not found:
         raise HTTPException(status_code=404, detail="Session not found")
-    return parse_session(session_dir)
+    session_dir, source = found
+    return parse_session(session_dir, source=source)
 
 
 @router.post("/{session_id}/export")
 def export_session(session_id: str, request: ExportRequest) -> PlainTextResponse:
-    session_dir = _find_session_dir(session_id)
-    if not session_dir:
+    found = _find_session_dir(session_id)
+    if not found:
         raise HTTPException(status_code=404, detail="Session not found")
+    session_dir, source = found
 
-    session = parse_session(session_dir)
+    session = parse_session(session_dir, source=source)
     selected = sorted(request.selected_indices)
     lines: list[str] = []
     lines.append(f"# {session.title}")
