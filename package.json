@@ -1,0 +1,17 @@
+{
+  "name": "kiminotebook",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev:server": "cd server && .venv/Scripts/uvicorn app.main:app --reload --port 8000",
+    "dev:web": "cd web && npm run dev",
+    "dev": "npm-run-all --parallel dev:server dev:web",
+    "build": "cd web && npm run build",
+    "test:server": "cd server && .venv/Scripts/pytest",
+    "test:web": "cd web && npm test",
+    "test": "npm run test:server && npm run test:web"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

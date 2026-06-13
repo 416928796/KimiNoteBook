@@ -9,7 +9,11 @@ from typing import Any, Dict, List
 from app.models.session import QAPair, SessionDetail, SessionSummary
 
 
-def _parse_datetime(value: str | None) -> datetime | None:
+def _parse_datetime(value: int | str | None) -> datetime | None:
+    if value is None:
+        return None
+    if isinstance(value, int):
+        return datetime.fromtimestamp(value / 1000.0)
     if not value:
         return None
     try:
@@ -80,11 +84,14 @@ def parse_wire_records(wire_path: Path) -> List[QAPair]:
                 message = record.get("message", {})
                 role = message.get("role")
                 if role in ("user", "assistant"):
+                    text = format_content(message.get("content"))
+                    if role == "user" and text.strip().startswith("<system-reminder>"):
+                        continue
                     qa_pairs.append(
                         QAPair(
                             index=len(qa_pairs),
                             role=role,
-                            content=format_content(message.get("content")),
+                            content=text,
                             created_at=time,
                         )
                     )
@@ -153,8 +160,8 @@ def parse_session(session_dir: Path) -> SessionDetail:
             state = json.load(fp)
 
     qa_pairs = parse_wire_records(wire_path) if wire_path.exists() else []
-    created_at = _parse_datetime(state.get("created_at"))
-    updated_at = _parse_datetime(state.get("updated_at"))
+    created_at = _parse_datetime(state.get("created_at") or state.get("createdAt"))
+    updated_at = _parse_datetime(state.get("updated_at") or state.get("updatedAt"))
 
     return SessionDetail(
         id=session_id,
