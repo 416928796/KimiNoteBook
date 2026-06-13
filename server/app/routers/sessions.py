@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -9,6 +10,31 @@ from fastapi.responses import PlainTextResponse
 from app.config import get_sessions_root
 from app.models.session import ExportRequest, SessionDetail, SessionSummary
 from app.services.session_parser import list_sessions, parse_session
+
+
+_HEADING_RE = re.compile(r"^(#{1,6})\s+(.*)$")
+
+
+def _demote_headings(content: str) -> str:
+    """将内容中的 Markdown 标题统一降级一级，代码块内不受影响。"""
+    lines = content.split("\n")
+    in_code_block = False
+    result: list[str] = []
+    for line in lines:
+        stripped = line.lstrip()
+        if stripped.startswith("```"):
+            in_code_block = not in_code_block
+            result.append(line)
+            continue
+        if in_code_block:
+            result.append(line)
+            continue
+        match = _HEADING_RE.match(line)
+        if match:
+            result.append(f"#{match.group(1)} {match.group(2)}")
+        else:
+            result.append(line)
+    return "\n".join(result)
 
 router = APIRouter(prefix="/api/sessions", tags=["sessions"])
 
@@ -56,13 +82,13 @@ def export_session(session_id: str, request: ExportRequest) -> PlainTextResponse
             continue
         pair = session.qa_pairs[idx]
         if pair.role == "user":
-            lines.append(f"## 用户")
+            lines.append("# 用户")
         elif pair.role == "assistant":
-            lines.append(f"## 模型")
+            lines.append("# 模型")
         else:
-            lines.append(f"## {pair.role}")
+            lines.append(f"# {pair.role}")
         lines.append("")
-        lines.append(pair.content)
+        lines.append(_demote_headings(pair.content))
         lines.append("")
 
     content = "\n".join(lines)

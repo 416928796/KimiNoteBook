@@ -36,7 +36,7 @@ def client(tmp_path, monkeypatch):
                 "type": "context.append_message",
                 "message": {
                     "role": "assistant",
-                    "content": [{"type": "text", "text": "Hi there!"}],
+                    "content": [{"type": "text", "text": "# Section\n\nHi there!"}],
                 },
             }
         )
@@ -89,3 +89,9 @@ def test_export_session(client):
     assert "Hello" in body
     assert "Hi there!" in body
     assert response.headers["content-type"].startswith("text/markdown")
+    # Issue #3: 用户/模型分节为一级标题，内容中的标题降级一级
+    assert "# 用户" in body
+    assert "# 模型" in body
+    assert "\n## Section\n" in body
+    model_part = body.split("# 模型")[1]
+    assert "\n# Section\n" not in model_part
