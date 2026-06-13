@@ -2,7 +2,7 @@
   <div class="session-list-view">
     <div class="page-header">
       <h1 class="page-title">
-        <img src="/kimi-logo.svg" alt="Kimi" class="kimi-logo" />
+        <img src="/favicon.ico" alt="Kimi" class="kimi-logo" />
         Kimi 会话浏览器
       </h1>
       <p class="page-subtitle">浏览本地 Kimi Code CLI 会话，导出精彩对话</p>
